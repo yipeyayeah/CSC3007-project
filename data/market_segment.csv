@@ -1,0 +1,30 @@
+﻿Name,District,MarketSegment
+City - Marina Area,1,CCR
+City - CBD,2,CCR
+Central South,3,RCR
+South - Keppel,4,RCR
+Sentosa,4,CCR
+South West,5,RCR
+City - City Hall,6,CCR
+City - Beach Road ,7,RCR
+Central - Little India,8,RCR
+Central - Orchard,9,CCR
+Central: Tanglin,10,CCR
+Central - Newton,11,CCR
+Central - Toa Payoh,12,RCR
+Central East,13,RCR
+Central East - Eunos,14,RCR
+East Coast - Katong,15,RCR
+Upper East Coast,16,OCR
+Far East - Changi,17,OCR
+Far East - Tampines,18,OCR
+North East - Hougang,19,OCR
+Central North - AMK,20,RCR
+Central West,21,OCR
+Far West - Jurong,22,OCR
+North West,23,OCR
+Far North West,24,OCR
+Far North,25,OCR
+North,26,OCR
+Far North - Yishun,27,OCR
+North East - Seletar,28,OCR

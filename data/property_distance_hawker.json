@@ -1,0 +1,86 @@
+{
+    "nodes": [
+        {
+            "name": "MRT",
+            "n": 5,
+            "grp": 1,
+            "id": "MRT",
+            "distance": 0
+    }, {
+            "name": "High Park Residences",
+            "n": 10,
+            "grp": 28,
+            "id": "High Park Residences",
+            "distance": 186
+    }, {
+            "name": "Botanique at Bartley",
+            "n": 10,
+            "grp": 19,
+            "id": "Botanique at Bartley",
+            "distance": 228
+    },
+        {
+            "name": "North Park Residences",
+            "n": 10,
+            "grp": 27,
+            "id": "North Park Residences",
+            "distance": 267
+    }, {
+            "name": "Adana @ Thomson",
+            "n": 10,
+            "grp": 20,
+            "id": "Adana @ Thomson",
+            "distance": 859
+    },
+        {
+            "name": "Hilbre28",
+            "n": 10,
+            "grp": 19,
+            "id": "Hilbre28",
+            "distance": 1100
+    },
+        {
+            "name": "Kingsford Waterbay",
+            "n": 10,
+            "grp": 19,
+            "id": "Kingsford Waterbay",
+            "distance": 1132
+    },
+        {
+            "name": "Symphony Suites",
+            "n": 10,
+            "grp": 27,
+            "id": "Symphony Suites",
+            "distance": 1194
+    }
+       ],
+    "links": [{
+        "source": "Botanique at Bartley",
+        "target": "MRT",
+        "value": 228
+    }, {
+        "source": "Hilbre28",
+        "target": "MRT",
+        "value": 1100
+    }, {
+        "source": "Kingsford Waterbay",
+        "target": "MRT",
+        "value": 1132
+    }, {
+        "source": "Adana @ Thomson",
+        "target": "MRT",
+        "value": 859
+    }, {
+        "source": "North Park Residences",
+        "target": "MRT",
+        "value": 267
+    }, {
+        "source": "Symphony Suites",
+        "target": "MRT",
+        "value": 1194
+    }, {
+        "source": "High Park Residences",
+        "target": "MRT",
+        "value": 186
+    }]
+}

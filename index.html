@@ -1,108 +1,743 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0" />
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css">
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
 
-    <title>Milestone 1</title>
+    <!--Import Google Icon Font-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700&subset=latin,cyrillic-ext" rel="stylesheet" type="text/css">
 
+    <!-- Favicons-->
+    <link rel="icon" href="images/condominium.png" sizes="32x32">
+
+
+    <!-- JQuery DataTable Css -->
+    <link href="css/style.css" rel="stylesheet">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+
+    <!-- BootStrap JavaScript -->
+    <!--<script src="js/bootstrap.min.js"></script> -->
+    <!-- Load d3.js -->
+    <script src="https://d3js.org/d3.v6.js"></script>
+    <script src="https://unpkg.com/d3-v6-tip@1.0.6/build/d3-v6-tip.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/2.13.0/d3-legend.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/bumbeishvili/d3-tip-for-v6@4/d3-tip.min.css">
+
+
+    <title>Private Condos as Investment Asset</title>
     <style>
-        .carousel-control-prev {
-            margin-left: -70px;
+        nav {
+            background: #026AA6;
+            position: fixed;
+            z-index: 100;
         }
 
-        .carousel-control-next {
-            padding-left: 140px;
+        .brand-logo {
+            margin-top: 8px;
         }
 
-        .main {
-            background-color: #262626;
+        body {
+            background: #eaeaea;
+        }
+
+
+        .dropdown-content li>span {
+            color: #026AA6;
+        }
+
+        .select-wrapper input.select-dropdown:hover {
+            border-bottom: 1px solid #026AA6;
+        }
+
+        .select-wrapper input.select-dropdown:focus {
+            border-bottom: 1px solid #026AA6;
+        }
+
+        .container-footer {
+            margin: auto;
+            width: 90%;
+            padding-left: 10px;
+            padding-top: 10px;
+            padding-bottom: 15px;
+        }
+
+        .page-footer {
+            background: #026AA6;
+        }
+
+        .parallax-container {
+            height: 550px;
+        }
+
+        .page-content-darkbg {
+            height: 540px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+        }
+
+        .page-summary-darkbg {
+            height: 470px;
+            margin-top: 50px;
+        }
+
+        .page-content-lightbg-normal {
+
+            padding-left: 20px !important;
+            padding-top: 20px !important;
+
+            text-align: justify;
+            text-justify: inter-word;
+
+        }
+
+        .page-content-graph {
+            padding-top: 20px !important;
+        }
+
+        .container {
+            width: 100%;
+            margin-bottom: 10px !important;
+        }
+
+        .link-sources-a {
+            font-size: 12px;
+        }
+
+        #packed-bubble-p {
+            text-align: justify;
+            text-justify: inter-word;
+        }
+
+        .table {
+            font-size: 13px;
+        }
+
+        .profit_condo_legend {
+            font-size: 11px;
+        }
+
+        .page-summary-darkbg-words {
+            color: white;
+            margin-left: 20px;
+            margin-right: 20px;
+            text-align: justify;
+        }
+
+        .page-summary-image {
+            background-image: url("images/summary_pic.jpg");
+            height: 580px;
+            width: 1000px;
+            margin-top: -15px;
+            margin-bottom: -25px;
+        }
+
+
+        /* Start for d3*/
+
+        .d3-tip {
+            font-family: Arial, Helvetica, sans-serif;
+            line-height: 1.4;
+            padding: 20px;
+            pointer-events: none !important;
+            color: #203d5d;
+            box-shadow: 0 4px 20px 4px rgba(0, 20, 60, .1), 0 4px 80px -8px rgba(0, 20, 60, .2);
+            background-color: #fff;
+            border-radius: 4px;
+            z-index: 2;
+        }
+
+        /* Creates a small triangle extender for the tooltip */
+        .d3-tip:after {
+            box-sizing: border-box;
+            display: inline;
+            font-size: 10px;
+            width: 100%;
+            line-height: 1;
+            color: #fff;
+            position: absolute;
+            pointer-events: none;
+        }
+
+        /* Northward tooltips */
+        .d3-tip.n:after {
+            content: "▼";
+            margin: -1px 0 0 0;
+            top: 100%;
+            left: 0;
+            text-align: center;
+        }
+
+        /* Eastward tooltips */
+        .d3-tip.e:after {
+            content: "◀";
+            margin: -4px 0 0 0;
+            top: 50%;
+            left: -8px;
+        }
+
+        /* Southward tooltips */
+        .d3-tip.s:after {
+            content: "▲";
+            margin: 0 0 1px 0;
+            top: -8px;
+            left: 0;
+            text-align: center;
+        }
+
+        /* Westward tooltips */
+        .d3-tip.w:after {
+            content: "▶";
+            margin: -4px 0 0 -1px;
+            top: 50%;
+            left: 100%;
+        }
+
+        /*End for d3*/
+
+
+
+        @media screen and (min-width: 601px) {
+
+            .header-banner-title {
+                font-size: 60px;
+                color: white;
+                position: absolute;
+                top: 15%;
+
+            }
+
+            .header-span-small {
+                font-size: 18px;
+                display: inline-block;
+                margin-top: 60px;
+            }
+
+            .header-span-content {
+                font-size: 22px;
+                display: inline-block;
+                line-height: normal;
+                margin: 0px 100px 0px;
+
+            }
+
+            .page-content-darkbg-words {
+                text-align: center;
+                vertical-align: center;
+                width: 50%;
+                color: white;
+            }
+
+
+
+            .page-content-lightbg-normal-words {}
+
+            #percent-stacked-bar-chart {
+                margin-top: 70px;
+            }
+
+
+        }
+
+        /* If the screen size is 600px wide or less, set the font-size of <div> to 30px */
+        @media screen and (max-width: 600px) {
+
+            .header-banner-title {
+                font-size: 40px;
+                color: white;
+                position: absolute;
+                top: 10%;
+
+            }
+
+            .header-span-small {
+                font-size: 18px;
+                display: inline-block;
+                margin-top: 80px;
+            }
+
+            .header-span-content {
+                font-size: 16px;
+                display: inline-block;
+                line-height: normal;
+                padding: 40px 30px 0px 30px;
+            }
+
+            .content {
+                padding-left: 30px;
+            }
+
+            .page-content-darkbg-words {
+                text-align: center;
+                font-size: 18px;
+                vertical-align: center;
+                width: 100%;
+                color: white;
+                margin-right: 30px;
+            }
+
         }
 
     </style>
 </head>
 
-<body class="main">
-    <div id="carousel-milestone1-slides" class="carousel slide" data-interval="false">
-        <div class="carousel-inner">
-            <div class="carousel-item active">
-                <img class="d-block w-100" src="./milestone1_slides/Slide1.JPG" alt="Slide 1">
+<body>
+    <header>
+        <nav>
+            <div class="container">
+                <div class="nav-wrapper">
+                    <a href="#" class="brand-logo center">
+                        <img alt="header-logo" src="images/header_logo.png" height="48px" />
+                    </a>
+                </div>
             </div>
-            <div class="carousel-item">
-                <img class="d-block w-100" src="./milestone1_slides/Slide2.JPG" alt="Slide 2">
-            </div>
-            <div class="carousel-item">
-                <img class="d-block w-100" src="./milestone1_slides/Slide3.JPG" alt="Slide 3">
-            </div>
-            <div class="carousel-item">
-                <img class="d-block w-100" src="./milestone1_slides/Slide4.JPG" alt="Slide 4">
-            </div>
-            <div class="carousel-item">
-                <img class="d-block w-100" src="./milestone1_slides/Slide5.JPG" alt="Slide 5">
-            </div>
-            <div class="carousel-item">
-                <img class="d-block w-100" src="./milestone1_slides/Slide6.JPG" alt="Slide 6">
-            </div>
-            <div class="carousel-item">
-                <img class="d-block w-100" src="./milestone1_slides/Slide7.JPG" alt="Slide 7">
-            </div>
-            <div class="carousel-item">
-                <img class="d-block w-100" src="./milestone1_slides/Slide8.JPG" alt="Slide 8">
-            </div>
-            <div class="carousel-item">
-                <img class="d-block w-100" src="./milestone1_slides/Slide9.JPG" alt="Slide 9">
-            </div>
-            <div class="carousel-item">
-                <img class="d-block w-100" src="./milestone1_slides/Slide10.JPG" alt="Slide 10">
-            </div>
-            <div class="carousel-item">
-                <img class="d-block w-100" src="./milestone1_slides/Slide11.JPG" alt="Slide 11">
-            </div>
-            <div class="carousel-item">
-                <img class="d-block w-100" src="./milestone1_slides/Slide12.JPG" alt="Slide 12">
-            </div>
-            <div class="carousel-item">
-                <img class="d-block w-100" src="./milestone1_slides/Slide13.JPG" alt="Slide 13">
-            </div>
-            <div class="carousel-item">
-                <img class="d-block w-100" src="./milestone1_slides/Slide14.JPG" alt="Slide 14">
-            </div>
-            <div class="carousel-item">
-                <img class="d-block w-100" src="./milestone1_slides/Slide15.JPG" alt="Slide 15">
-            </div>
-            <div class="carousel-item">
-                <img class="d-block w-100" src="./milestone1_slides/Slide16.JPG" alt="Slide 16">
-            </div>
-            <div class="carousel-item">
-                <img class="d-block w-100" src="./milestone1_slides/Slide17.JPG" alt="Slide 17">
-            </div>
-            <div class="carousel-item">
-                <img class="d-block w-100" src="./milestone1_slides/Slide18.JPG" alt="Slide 18">
-            </div>
-            <div class="carousel-item">
-                <img class="d-block w-100" src="./milestone1_slides/Slide19.JPG" alt="Slide 19">
+        </nav>
+    </header>
+    <div class="container-body">
+        <!-- Start of main body -->
+        <!--  Parallax Section  -->
+        <div class="parallax-container section">
+            <div class="parallax">
+                <img src="images/header1-overlay2.jpg">
+                <h1 class="header-banner-title center">
+                    Understanding Private Condominiums as an <span style="color: yellow"><b>Investment Asset</b></span>
+
+                    <br>
+                    <span class="header-span-small">
+                        <b> by Oh Qi Qi, Isaac Ibrahim, Gideon Yip</b>
+                    </span>
+
+                    <br>
+                    <br>
+                    <span class="header-span-content">
+                        Private condominiums have always been seen as a good potential invesment asset
+                        in diversifying the investment portfolio in the real estate sector. </span>
+                </h1>
+
             </div>
         </div>
-        <a class="carousel-control-prev" href="#carousel-milestone1-slides" role="button" data-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="sr-only">Previous</span>
-        </a>
-        <a class="carousel-control-next" href="#carousel-milestone1-slides" role="button" data-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="sr-only">Next</span>
-        </a>
+        <div class="section black">
+            <div class="row container">
+                <div class="col s12 m12 l12 page-content-darkbg">
+                    <h5 class="page-content-darkbg-words content"> Have you ever wanted to invest in private condominiums but are not exactly sure on how it works? After all, the way the property market works is <span style="color: yellow"><b>very different</b></span>, depending on the type of property (e.g HDB, landed house, private condo) you are looking at. Let's start with the basic overview.</h5>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Start of choropleth-->
+        <div class="section white">
+            <div class="row container">
+                <div class=" row col s12 m12 l12 page-content-lightbg-normal">
+                    <div class="col l4 m4 s12">
+                        <h5 class="header">What is Market Segment?</h5>
+
+                        <p>URA has divided Singapore into <b>3 main regions</b> also term as "Market Segments". These market segments contain all the 28 Singapore district and are known as:
+                        </p>
+                        <ol>
+                            <li>Core Central Region (CCR)</li>
+                            <li>Rest of Central Region (RCR)</li>
+                            <li>Outside Central Region (OCR)</li>
+                        </ol>
+                        <p> The <b>CCR</b> occupies the smallest planning area in Singapore and is where most high end luxury condos, prestigious schools and Grade A offices can be found.</p>
+                        <p> The <b>RCR</b> is often considered as a mid-tier region within the central part of Singapore but just outside of CCR.</p>
+                        <p> The <b>OCR</b> occupies the largest planning area and is where condos at the lower price range are mostly located.</p>
+
+                        <p>Sources:
+                            <br>
+                            <a class="dark-blue-text link-sources-a" href="https://www.chantelteo.co/post/how-to-be-a-happy-property-buyer-part-1-planning-areas"><u>How to be a Happy Property Buyer Part 1 | Planning Areas</u></a>
+                            <br>
+                            <a class="dark-blue-text link-sources-a" href="https://www.propertyguru.com.sg/property-guides/ccr-ocr-rcr-region-singapore-ura-map-21045"><u>Singapore District Map: Defining the CCR, RCR and OCR by the 28 Districts</u></a>
+                        </p>
+                    </div>
+
+                    <div class="col l8 m8 s12">
+
+                        <div class="input-field">
+                            <!-- Initialize a select button -->
+                            <a id="choropleth-map-zoom" class="waves-effect waves-light btn zoom-btn">Reset Zoom</a>
+                        </div>
+
+                        <!-- Create a div where the graph will take place -->
+                        <div id="choropleth-map" class="col l12 m12 s12"></div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- End of choropleth -->
+
+        <div class="section black">
+            <div class="row container">
+                <div class="col s12 m12 l12 page-content-darkbg">
+                    <h5 class="page-content-darkbg-words content"> Since OCR is the largest planning area and has the most number of transactions, we will be focusing on the private condominiums that were a <span style="color: yellow"><b>new launch in 2015</b></span> and lies within the OCR market segment. </h5>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Start of packed bubbles section-->
+        <div class="section white">
+            <div class="row container">
+                <div class=" row col s12 m12 l12 page-content-lightbg-normal">
+                    <div class="col l4 m4 s12">
+                        <h5 class="header">Private Condos launched in 2015</h5>
+
+                        <p>In the year of <b>2015</b>, there are a total of <b>7</b> newly launched private condos in the <b>OCR </b>market segment:
+                        </p>
+                        <ol>
+                            <li>Adana @ Thomson</li>
+                            <li>Botanique at Bartley</li>
+                            <li>High Park Residences</li>
+                            <li>Hilbre28</li>
+                            <li>Kingsford Waterbay</li>
+                            <li>North Park Residences</li>
+                            <li>Symphony Suites</li>
+                        </ol>
+
+                        <p>Source:
+                            <br>
+                            <a class="dark-blue-text link-sources-a" href="https://www.myexclusivecondo.com/buyer-seller-must-know/newcondolaunches2015/"><u>New Condo launches in 2015</u></a>
+                        </p>
+                    </div>
+
+                    <div class="col l4 m4 s12">
+
+                        <!-- Create a div where the graph will take place -->
+                        <div id="packed-bubbles-condo" class="col l12 m12 s12 page-content-graph"></div>
+
+                    </div>
+
+                    <div class="col l4 m4 s12" style="padding-right: 24px;">
+                        <p>Each bubble represent a private condo, hover a bubble to find out more about the condo</p>
+                        <p id="packed-bubble-p">
+                            <b>Project: -</b>
+                            <br><b>District: -</b>
+                            <br><b>Landsize (sqm): -</b>
+                            <br><b>Total Units: -</b>
+                            <br><b>Description: -</b>
+                        </p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- End of packed bubbles section -->
+
+        <div class="section black">
+            <div class="row container">
+                <div class="col s12 m12 l12 page-content-darkbg">
+                    <h5 class="page-content-darkbg-words content"> One common question asked by people: <br> <span style="color: yellow"><b>How far is the condo away </b> </span>from the Mass Rapid Transit (MRT) Station ? Distance to the MRT Station matters because it can affect the price and also act as a landmark. MRT stations are the locus of where all the Retail, commercial, industrial activities cluster and is also the heart of neighbourhoods. </h5>
+
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Start of distance section -->
+        <div class="section white">
+            <div class="row container">
+                <div class=" row col s12 m12 l12 page-content-lightbg-normal">
+                    <div class="col l4 m4 s12">
+                        <h5 class="header">Distance from MRT/LRT Stations</h5>
+
+                        <p>When talking about a specific location to someone in Singapore, we seldom go as far as to mention the street name or avenue. Instead, we tell someone that it’s that cafe in Bugis or that office near Marina Bay station.
+                        <p>When asked where we stay, we almost always reply that it’s near this or that MRT station. <b>MRT allow people to easily relate to one another spatially</b>. We almost instantly know where the person is talking about, for most of us take the train as part of our daily routine.</p>
+                        <p>It is important to know how far the condo is away from the MRT/LRT Station as it serves as a guide whether is the condo very accessible and convenient for the residents to commute.</p>
+                        <p>Hover over each circle to view each condo <b>distance away from the nearest MRT/LRT Station.</b> </p>
+
+                        <p>Source:
+                            <br>
+                            <a class="dark-blue-text link-sources-a" href="https://www.propertylimbrothers.com/insights-posts/a-new-buyers-map-for-2022"><u>A New Buyer’s Map for 2022 - PLB’s Near-MRT Condo Catalogue</u></a>
+                        </p>
+                    </div>
+
+                    <div class="col l8 m8 s12">
+
+                        <!-- Create a div where the graph will take place -->
+                        <div id="arc-diagram-distance" class="col l12 m12 s12"></div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- End of distance section -->
+
+        <div class="section black">
+            <div class="row container">
+                <div class="col s12 m12 l12 page-content-darkbg">
+                    <h5 class="page-content-darkbg-words content">After having a basic overview of each of the private condos, how many purchase was made in the year 2015 when it was newly launch? The number of purchase transaction in the year it was launch indicates the <span style="color: yellow"><b>popularity level</b> </span> of the private condos.</h5>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Start of percent stack bar section -->
+        <div class="section white">
+            <div class="row container">
+                <div class=" row col s12 m12 l12 page-content-lightbg-normal">
+                    <div class="col l4 m4 s12">
+                        <h5 class="header">Popularity of new Launch in 2015</h5>
+
+                        <p>From the data, it was observed that High Park Residence has the <b>most number</b> of units sold out in 2015 which was the year it was launched, followed by Botanique at Bartley and then North Park Residence. </p>
+                        <p> High Park Residence has the <b>shortest distance</b> to the nearest MRT/LRT station followerd by Botanique at Bartley and then North Park Residence.</p>
+                        <p>It would appear that the distance of the condos to the nearest MRT/LRT <b>affects the volume of transactions</b> which indicates the popularity of it. This might be due to the fact that people generally would prefer properties nearer to MRT/LRT stations.</p>
+                        <p>Therefore, a possible general guide to know whether the property will be popular can be related to how far it is away from the nearest MRT/LRT station.</p>
+                        <p>Hover over each bar to view the <b>transaction volume</b> for each respective private condo.</p>
+
+                    </div>
+
+                    <div class="col l8 m8 s12">
+
+                        <!-- Create a div where the graph will take place -->
+                        <div id="percent-stacked-bar-chart" class="col l12 m12 s12"></div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- End of percent stack bar section -->
+
+        <div class="section black">
+            <div class="row container">
+                <div class="col s12 m12 l12 page-content-darkbg">
+                    <h5 class="page-content-darkbg-words content">
+                        Based on the data, approximately <span style="color: yellow"><b>15%</b></span> of the buyers that bought in 2015 sold their private condominiums within the next few years. Therefore, we will focus on the <span style="color: yellow"><b>profitable transactions</b></span> of the private condominiums sold after 2015 to determine buyers' likely behaviour and spot any possible transaction trends.</h5>
+
+                </div>
+            </div>
+        </div>
+
+
+        <!-- Start of transaction line section -->
+        <div class="section white">
+            <div class="row container">
+                <div class=" row col s12 m12 l12 page-content-lightbg-normal">
+                    <div class="col l6 m6 s12">
+                        <h5 class="header">Profitable Transactions Volume Trend</h5>
+
+                        <p>Most transactions occur approximately <b>4 years (2019-2021) </b>after the year 2015 (the year of purchase), which may be due to the Seller Stamp Duty (SSD). The SSD is a <b>property tax</b> that a property seller has to pay when he/she sells a property <b> within the holding period</b> (number of years that you own a property). For purchase made between 14 Jan 2011 and 10 Mar 2017, the SSD is as per follow:</p>
+
+                        <table class="striped table">
+                            <thead>
+                                <tr>
+                                    <th>Number of years after purchase</th>
+                                    <th>Payable SSD</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                <tr>
+                                    <td>Up to 1 year</td>
+                                    <td>16%</td>
+                                </tr>
+                                <tr>
+                                    <td>More than 1 year and up to 2 years</td>
+                                    <td>12 %</td>
+                                </tr>
+                                <tr>
+                                    <td>More than 2 years and up to 3 years</td>
+                                    <td>8%</td>
+                                </tr>
+                                <tr>
+                                    <td>More than 3 years and up to 4 years</td>
+                                    <td>4%</td>
+                                </tr>
+                                <tr>
+                                    <td>More than 4 years</td>
+                                    <td>No SSD Payable</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <p>One interesting observation is that the number of profitable transactions dipped in the year 2020 which may be due to the COVID-19 pandemic.</p>
+                        <p>Source:
+                            <a class="dark-blue-text link-sources-a" href="https://www.propertyguru.com.sg/property-guides/seller-stamp-duty-guide-12621"><u>Seller's Stamp Duty of Up to 12%: What Property Sellers Need to Know</u></a>
+                        </p>
+
+                    </div>
+
+                    <div class="col l6 m6 s12">
+
+                        <!-- Create a div where the graph will take place -->
+                        <div id="total-transactions-line-chart" class="col l12 m12 s12">
+                            <p>Hover over each point to view the <b>profitable transaction volume</b> for each year.</p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- End of transaction line  section -->
+
+        <div class="section black">
+            <div class="row container">
+                <div class="col s12 m12 l12 page-content-darkbg">
+                    <h5 class="page-content-darkbg-words content">
+                        Since there are more transactions from the year 2019 to the year 2021, we will be focusing on the profitable transactions between those years. Next, we will view the number of profitable transactions and the <span style="color: yellow"><b>breakdown of bedroom size</b></span> for each property in each respective year. </h5>
+                </div>
+            </div>
+        </div>
+
+        <!-- Start of bedroom stack bar section -->
+        <div class="section white">
+            <div class="row container">
+                <div class=" row col s12 m12 l12 page-content-lightbg-normal">
+                    <div class="col l5 m5 s12">
+                        <h5 class="header">Transactions and Bedroom Size </h5>
+
+                        <p>From the data, it was observed that 1/2Br have more transaction across different private condos as compared to 3/4/5 Br.
+                        <p>This might be due to the fact when buying for investment, a popular guide is to <b>buy the smaller unit</b> as smaller units give better cash flow and appreciate at a faster rate.</p>
+                        <p>Therefore, normally people who buy just to invest will purchase 1Br or 2Br as it is the more popular choice and will sell it fast after the minimum required holding period to avoid paying SSD.</p>
+                        <p>Furthermore, the development size might also affect the future transactions. This is reflectd in Hilbre28 who is a small development with only 28 units. Therefore, there might not be much transaction volume given a small amount of units available.</p>
+
+                        <p>Filter based on the years and hover over each bar to view the <b>transaction volume of bedroom sizes</b> for each respective private condo.</p>
+                        <p>Source:
+                            <a class="dark-blue-text link-sources-a" href="https://truecondos.com/whats-best-size-condo-buy-investment/"><u>What’s the Best Condo Size to Buy for Investment?</u></a>
+                        </p>
+                    </div>
+
+                    <div class="col l7 m7 s12">
+
+                        <div class="input-field col l2 m3 s12">
+                            <!-- Initialize a select button -->
+                            <select id="bedroom-year-select-button"></select>
+                            <label>Year of Sale</label>
+                        </div>
+
+                        <!-- Create a div where the graph will take place -->
+                        <div id="bedroom-stacked-bar-chart" class="col l12 m12 s12"></div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- End of bedroom stack bar section -->
+
+        <div class="section black">
+            <div class="row container">
+                <div class="col s12 m12 l12 page-content-darkbg">
+                    <h5 class="page-content-darkbg-words content">
+                        Since there are more transactions for 1/2Br, we will be focusing on property that have profitable transaction for 1Br and 2 Br from year 2019 to 2021. Next, we will view the <span style="color: yellow"><b>profit</b></span> made by the property for 1Br and 2Br from 2019 to 2021. </h5>
+                </div>
+            </div>
+        </div>
+
+        <!-- Start of profit line chart section -->
+        <div class="section white">
+            <div class="row container">
+                <div class=" row col s12 m12 l12 page-content-lightbg-normal">
+                    <div class="col l3 m3 s12">
+                        <h5 class="header">Profits by Bedroom Size</h5>
+
+                        <p>All the selected private condos actually did made some profits on avergae.</p>
+                        <p>From the data, the dip in profit in 2020 correlates with the dip in the number of profitable transaction most likely due to the Covid-19 pandemic.
+                        <p>North Park Residence 1Br did not earn as much as compared to the 2Br. This was because the purchase and sale PSF for the year of 2020 and 2021 did not differ much hence rendering lesser profit.</p>
+                        <p>Wherease High Park Residence 1Br have a significant difference hence generating a higher profit. </p>
+
+                    </div>
+
+                    <div class="col l9 m9 s12" style="padding-top: 15px;">
+
+                        <div class="input-field col l2 m3 s12">
+                            <!-- Initialize a select button -->
+                            <select id="profit-bedroom-select-button"></select>
+                            <label>Bedroom Size</label>
+                        </div>
+
+                        <!-- Create a div where the graph will take place -->
+                        <div id="profit-bedroom-line-chart" class="col l12 m12 s12"></div>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <!-- End of profit line chart section -->
+
+        <div class="section black">
+            <div class="row container">
+                <div class="col s12 m6 l6 page-summary-image "></div>
+                <div class="col s12 m6 l6 page-summary-darkbg">
+                    <h5 class="page-summary-darkbg-words">
+                        Summary
+                    </h5>
+                    <p class="page-summary-darkbg-words">
+                        When considering newly launched residential property as an asset class for investment, here are a few points to take note of:
+                    </p>
+                    <ol class="page-summary-darkbg-words">
+                        <li>Knowing which market segment the new launch is under is very important as in different market segments, the <span style="color: yellow"><b>pricing range</b></span> will be different.</li>
+
+                        <li>It is suggested that an individual looks at a new launch condo <span style="color: yellow"><b>distance </b></span>to the nearest existing or future MRT/LRT station as it will indicate the property's convenience, affecting its popularity.</li>
+
+                        <li>From an investment point of view, it will be <span style="color: yellow"><b>good to purchase a 1/2 BR unit</b></span> to allow for better cash flow and lower upfront capital. </li>
+
+                    </ol>
+                    <p class="page-summary-darkbg-words">
+                        However, there might be many more factors that might affect the profitability of a new launch. Therefore, <span style="color: yellow"><b>consulting a subject matter expert</b></span> such as a property agent focusing on the private condo market is advisable to understand more.
+                    </p>
+                    <p class="page-summary-darkbg-words">
+                        Last but not least, happy investing!
+                    </p>
+
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- Optional JavaScript -->
-    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/js/bootstrap.min.js"></script>
+    <!-- End of mainbody -->
+
+
+    <footer class="page-footer">
+        <div class="container-footer">
+
+            Made by <a class="grey-text text-lighten-1" href="#">Team 8</a>
+        </div>
+    </footer>
+
+    <script>
+        $(document).ready(function() {
+            $('.parallax').parallax();
+            generateChoroplethMap();
+            generatePackedBubblesProperty();
+            generateArcDiagramDistance();
+            generatePercentStackedBar();
+            generateTotalTransactionLine();
+            generateBedroomStackedBar();
+            generateProfitLineChart();
+        });
+
+    </script>
+
+    <!-- Choropleth Market Segments -->
+    <script src="js/d3_charts/choropleth_d3.js"></script>
+    <!-- Packed Bubbles Property in OCR -->
+    <script src="js/d3_charts/packed_bubbles_d3.js"></script>
+    <!-- MRT Distance Arc Diagram -->
+    <script src="js/d3_charts/mrt_distance_arc_diagram_d3.js"></script>
+    <!-- Percent Stacked Bar Chart Diagram -->
+    <script src="js/d3_charts/full_percent_stacked_bar_d3.js"></script>
+    <!-- Line Chart Transactions Diagram -->
+    <script src="js/d3_charts/transaction_line_chart_d3.js"></script>
+    <!-- Bedroom Stacked Bar Chart Diagram -->
+    <script src="js/d3_charts/bedroom_stacked_bar_d3.js"></script>
+    <!-- Profit Line Chart Diagram -->
+    <script src="js/d3_charts/profit_line_chart_d3.js"></script>
 
 </body>
 
